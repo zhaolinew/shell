@@ -1,0 +1,819 @@
+#!/bin/bash
+COWI='\e[1;47m'
+CORED='\e[1;41m'
+LOR='\e[0m'
+CO[1]="\e[1;$[41+x]m"
+CO[2]="\e[1;$[41+x]m"
+CO[3]="\e[1;$[41+x]m"
+CO[4]="\e[1;$[41+x]m"
+print_hanio(){
+	hlayer=$[$1+1]
+	echo
+	for i in $(seq $hlayer)
+	do
+    	for j in $(seq $[hlayer-i] -1 1)
+    	do
+        	echo -ne " "
+    	done
+    	
+		if [ $i -eq 1 ] ; then
+        		echo -ne "│"
+    	else
+    		x=$[i-1]
+    		CO[$x]="\e[1;$[41+x]m"
+    		for z in $(seq $[i*2-1])
+    		do
+        		echo -ne "${CO[$x]} ${LOR}"
+    		done
+    	fi
+    	echo
+	done
+	for j in $(seq $[$1*2+4])
+	do
+		if [ $[j-1] -eq $1 ] ;then
+			echo -ne "┴"
+		else	
+			echo -ne "─"
+		fi
+	done
+	echo 
+}
+print_gang(){
+hlayer=$[$1+1]
+tput cup $[$2] $3
+for i in $(seq $hlayer)
+do
+	for j in $(seq $[hlayer] -1 1)
+	do
+		echo -n " "
+	done
+	echo "│"
+	tput cup $[$2+i] $3
+done
+	for j in $(seq $[$1*2+4])
+	do
+	    if [ $[j-1] -eq $1 ] ;then
+	        echo -ne "─┴"
+	    else
+	        echo -ne "─"
+	    fi
+	done
+	echo
+}
+move1(){
+    if [ $1 -eq 1 ] ; then
+        echo "$1: move $2 ==> $4"
+    else
+		sleep 0.5
+        move $[$1-1] $2 $4 $3
+		sleep 0.5
+        echo "$1: move $2 ==> $4"
+		sleep 0.5
+        move $[$1-1] $3 $2 $4
+  fi
+}
+move(){
+    if [ $1 -eq 1 ] ; then
+        echo "$1: move $2 ==> $4"
+    else
+        move $[$1-1] $2 $4 $3
+        echo "$1: move $2 ==> $4"
+        move $[$1-1] $3 $2 $4
+    fi
+}
+p1(){
+	tput cup 2 0
+	echo -e "   ${CO[1]}   ${LOR}           │           │"	
+	echo -e "    │            │           │"
+	echo -e "  ${CO[2]}     ${LOR}          │           │"
+	echo -e " ${CO[3]}       ${LOR}         │           │"
+	echo -e "${CO[4]}         ${LOR}        │           │"
+	echo -e "────┴────────────┴───────────┴───────"
+}
+p2(){
+	tput cup 1 0
+	echo -e "   ${CO[1]}   ${LOR}                      "	
+	echo -e "    │            │           │"
+	echo -e "    │            │           │"
+	echo -e "  ${CO[2]}     ${LOR}          │           │"
+	echo -e " ${CO[3]}       ${LOR}         │           │"
+	echo -e "${CO[4]}         ${LOR}        │           │"
+	echo -e "────┴────────────┴───────────┴───────"
+}
+p3(){
+for i in $(seq 13)
+do
+	tput cup 1 0
+	for j in $(seq $i)
+do
+	echo -ne " "
+done
+	echo -e "   ${CO[1]}   ${LOR}                      "	
+	
+	echo -e "    │            │           │"
+	echo -e "    │            │           │"
+	echo -e "  ${CO[2]}     ${LOR}          │           │"
+	echo -e " ${CO[3]}       ${LOR}         │           │"
+	echo -e "${CO[4]}         ${LOR}        │           │"
+	echo -e "────┴────────────┴───────────┴───────"
+sleep 0.1
+done
+}
+p4(){
+	tput cup 1 0
+echo "                                                        "
+echo -e "    │           ${CO[1]}   ${LOR}          │"
+echo -e "    │            │           │"
+echo -e "  ${CO[2]}     ${LOR}          │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}        │           │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p5(){
+	tput cup 1 0
+echo "                                                        "
+echo -e "    │            │           │"
+echo -e "    │           ${CO[1]}   ${LOR}          │"
+echo -e "  ${CO[2]}     ${LOR}          │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}        │           │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p6(){
+	tput cup 1 0
+echo "                                                        "
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e "  ${CO[2]}     ${LOR}         ${CO[1]}   ${LOR}          │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}        │           │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p7(){
+	tput cup 1 0
+echo "                                                        "
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e "  ${CO[2]}     ${LOR}          │           │"
+echo -e " ${CO[3]}       ${LOR}        ${CO[1]}   ${LOR}          │"
+echo -e "${CO[4]}         ${LOR}        │           │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p8(){
+	tput cup 1 0
+echo "                                                        "
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e "  ${CO[2]}     ${LOR}          │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p9(){
+	tput cup 1 0
+echo "                                                        "
+echo -e "    │            │           │"
+echo -e "  ${CO[2]}     ${LOR}          │           │"
+echo -e "    │            │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p10(){
+	tput cup 1 0
+echo "                                                        "
+echo -e "  ${CO[2]}     ${LOR}          │           │"
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p11(){
+	tput cup 1 0
+echo -e "  ${CO[2]}     ${LOR}         "
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p12(){
+for j in $(seq 25)
+do
+	tput cup 1 0
+for i in $(seq $j)
+do
+	echo -ne " "
+done
+echo -e "  ${CO[2]}     ${LOR}         "
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+sleep 0.1
+done
+}
+
+p13(){
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │         ${CO[2]}     ${LOR}         "
+echo -e "    │            │           │"
+echo -e "    │            │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p14(){
+tput cup 1 0
+echo -e "                                             "
+echo -e "    │            │           │      "
+echo -e "    │            │         ${CO[2]}     ${LOR}         "
+echo -e "    │            │           │"
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p15(){
+tput cup 1 0
+echo -e "                                             "
+echo -e "    │            │           │        "
+echo -e "    │            │           │        "
+echo -e "    │            │         ${CO[2]}     ${LOR}         "
+echo -e " ${CO[3]}       ${LOR}         │           │"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p16(){
+tput cup 1 0
+echo -e "                                         "
+echo -e "    │            │           │     "
+echo -e "    │            │           │     "
+echo -e "    │            │           │     "
+echo -e " ${CO[3]}       ${LOR}         │         ${CO[2]}     ${LOR}"
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}          │"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p17(){
+tput cup 1 0
+echo -e "                                         "
+echo -e "    │            │           │     "
+echo -e "    │            │           │     "
+echo -e "    │            │           │     "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}       ${CO[1]}   ${LOR}        ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p18(){
+tput cup 1 0
+echo -e "                                         "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e " ${CO[3]}       ${LOR}        ${CO[1]}   ${LOR}          │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p19(){
+tput cup 1 0
+echo -e "                                         "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e "    │           ${CO[1]}   ${LOR}          │   "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p20(){
+tput cup 1 0
+echo -e "                                         "
+echo -e "    │            │           │   "
+echo -e "    │           ${CO[1]}   ${LOR}          │   "
+echo -e "    │            │           │   "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p21(){
+tput cup 1 0
+echo -e "                                         "
+echo -e "    │           ${CO[1]}   ${LOR}          │   "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p22(){
+tput cup 1 0
+echo -e "                ${CO[1]}   ${LOR}               "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p23(){
+for i in $(seq 12)
+do
+tput cup 1 0
+for j in $(seq $i)
+do
+	echo -ne " "
+done 
+echo -e "                ${CO[1]}   ${LOR}               "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+sleep 0.1
+done
+}
+p24(){
+tput cup 1 0
+echo -e "                                                 "
+echo -e "    │            │          ${CO[1]}   ${LOR}               "
+echo -e "    │            │           │   "
+echo -e "    │            │           │   "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p25(){
+tput cup 1 0
+echo -e "                                                 "
+echo -e "    │            │           │   "
+echo -e "    │            │          ${CO[1]}   ${LOR}               "
+echo -e "    │            │           │   "
+echo -e " ${CO[3]}       ${LOR}         │           │  "
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p26(){
+tput cup 1 0
+echo -e "                                                 "
+echo -e "    │            │           │      "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e " ${CO[3]}       ${LOR}         │          ${CO[1]}   ${LOR}"
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"
+}
+p27(){
+tput cup 5 0
+echo -e "    │    "
+tput cup 4 0
+echo -e " ${CO[3]}       ${LOR}  "
+}
+p28(){
+tput cup 4 0
+echo -e "    │    "
+echo -e "    │    "
+tput cup 3 0
+echo -e " ${CO[3]}       ${LOR}  "
+}
+p29(){
+tput cup 3 0
+echo -e "    │    "
+echo -e "    │    "
+echo -e "    │    "
+tput cup 2 0
+echo -e " ${CO[3]}       ${LOR}  "
+}
+p30(){
+tput cup 2 0
+echo -e "    │    "
+echo -e "    │    "
+echo -e "    │    "
+echo -e "    │    "
+tput cup 1 0
+echo -e " ${CO[3]}       ${LOR}  "
+tput cup 10 0 
+}
+p31(){
+for i in $(seq 13)
+do
+tput cup 1 0
+for j in $(seq $i)
+do
+	echo -n " "
+done
+echo -e " ${CO[3]}       ${LOR}                                               "
+echo -e "    │            │           │      "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+sleep 0.1
+done
+}
+p32(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │         ${CO[3]}       ${LOR}        │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p33(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │            │           │       "
+echo -e "    │         ${CO[3]}       ${LOR}        │       "
+echo -e "    │            │           │              "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p34(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │         ${CO[3]}       ${LOR}        │       "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p35(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "    │         ${CO[3]}       ${LOR}       ${CO[1]}   ${LOR}"
+echo -e "${CO[4]}         ${LOR}        │         ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p36(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p37(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p38(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │            │           │       "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p39(){
+
+tput cup 1 0
+echo -e "                                                  "
+echo -e "    │            │          ${CO[1]}   ${LOR}"
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p40(){
+
+tput cup 1 0
+echo -e "                            ${CO[1]}   ${LOR}"
+echo -e "    │            │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p41(){
+for i in $(seq 26 -1 1)
+do
+
+tput cup 1 0
+for j in $(seq $i)
+do
+echo -n " "
+done
+echo -e "  ${CO[1]}   ${LOR}                                 "
+echo -e "    │            │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+sleep 0.1
+done
+}
+p42(){
+
+tput cup 1 0
+echo -e "   ${CO[1]}   ${LOR}                                 "
+echo -e "    │            │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+
+p43(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "   ${CO[1]}   ${LOR}           │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p44(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │           │       "
+echo -e "   ${CO[1]}   ${LOR}           │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p45(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │       "
+echo -e "    │            │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p46(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "   ${CO[1]}   ${LOR}           │           │       "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}      ${CO[2]}     ${LOR}"
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p47(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "   ${CO[1]}   ${LOR}           │         ${CO[2]}     ${LOR}     "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p48(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │         ${CO[2]}     ${LOR}     "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p49(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │           │       "
+echo -e "    │            │         ${CO[2]}     ${LOR}     "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p50(){
+
+tput cup 1 0
+echo -e "                                            "
+echo -e "    │            │         ${CO[2]}     ${LOR}     "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p51(){
+
+tput cup 1 0
+echo -e "                           ${CO[2]}     ${LOR}     "
+echo -e "    │            │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p52(){
+for i in $(seq 13 -1 1 )
+do
+tput cup 1 0
+	for j in $(seq $i)
+	do
+		echo -n " "
+	done
+
+echo -e "              ${CO[2]}     ${LOR}                          "
+echo -e "    │            │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+sleep 0.1
+done
+}
+p53(){
+tput cup 1 0
+echo -e "                                        "
+echo -e "    │          ${CO[2]}     ${LOR}         │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p54(){
+tput cup 1 0
+echo -e "                                        "
+echo -e "    │            │           │       "
+echo -e "    │          ${CO[2]}     ${LOR}         │       "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p55(){
+tput cup 1 0
+echo -e "                                        "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │          ${CO[2]}     ${LOR}         │       "
+echo -e "   ${CO[1]}   ${LOR}           │           │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p56(){
+tput cup 1 0
+echo -e "                                        "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │            │           │       "
+echo -e "   ${CO[1]}   ${LOR}         ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p57(){
+tput cup 1 0
+echo -e "                                        "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "   ${CO[1]}   ${LOR}           │           │       "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p58(){
+tput cup 1 0
+echo -e "                                        "
+echo -e "    │            │           │       "
+echo -e "   ${CO[1]}   ${LOR}           │           │       "
+echo -e "    │            │           │              "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p59(){
+tput cup 1 0
+echo -e "                                        "
+echo -e "   ${CO[1]}   ${LOR}           │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p60(){
+tput cup 1 0
+echo -e "   ${CO[1]}   ${LOR}                             "
+echo -e "    │            │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p61(){
+for i in $(seq 13)
+do
+tput cup 1 0
+	for j in $(seq $i)
+	do
+		echo -n " "
+	done
+echo -e "   ${CO[1]}   ${LOR}                             "
+echo -e "    │            │           │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+sleep 0.1
+done
+}
+
+p62(){
+tput cup 1 0
+echo -e "                                          "
+echo -e "    │           ${CO[1]}   ${LOR}          │       "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p63(){
+tput cup 1 0
+echo -e "                                          "
+echo -e "    │            │           │       "
+echo -e "    │           ${CO[1]}   ${LOR}          │       "
+echo -e "    │            │           │              "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p64(){
+tput cup 1 0
+echo -e "                                          "
+echo -e "    │            │           │       "
+echo -e "    │            │           │              "
+echo -e "    │           ${CO[1]}   ${LOR}          │       "
+echo -e "    │          ${CO[2]}     ${LOR}         │        "
+echo -e "${CO[4]}         ${LOR}     ${CO[3]}       ${LOR}        │     "
+echo -e "────┴────────────┴───────────┴───────"	
+}
+p65(){
+	tput cup 8 3
+	echo "┌──────────────────────────┐"
+	tput cup 9 3
+	echo "│     不想写了,就这样了    │"
+	tput cup 10 3
+	echo "└──────────────────────────┘"
+	sleep 2
+	tput cup 8 1
+	echo "                              "
+	echo "                                "
+	echo "                                "
+	tput cup 6 0 
+	for i in $(seq 9)
+	do
+		if [ $i -eq 5 ]; then
+			echo -n "│"
+		else
+			echo -n " "
+		fi
+		sleep 0.1
+	done
+	tput  cup 20 0
+}
+
